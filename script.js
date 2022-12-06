@@ -56,6 +56,23 @@ class Calculator{
     this.previousOperand = ''
   }
 
+  pow() {
+    if (this.currentOperand === '') return
+    let computation
+    const current = parseFloat(this.currentOperand)
+    computation = +(current * current).toFixed(8)
+    this.currentOperand = computation
+  }
+  
+  root() {
+    if (this.currentOperand === '') return
+    if (this.currentOperand < 0) return
+    let computation
+    const current = parseFloat(this.currentOperand)
+    computation = +Math.sqrt(current).toFixed(8)
+    this.currentOperand = computation
+  }
+
   getDisplayNumber(number) {
     const stringNumber = number.toString()
     const integerDigits = parseFloat(stringNumber.split('.')[0])
@@ -74,8 +91,7 @@ class Calculator{
   }
 
   updateDisplay() {
-    this.currentOperandTextElement.innerText = 
-    this.getDisplayNumber(this.currentOperand)
+    this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand)
     if (this.operation != null) {
       this.previousOperandTextElement.innerText = 
         `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`
@@ -90,6 +106,8 @@ class Calculator{
 
 const numberButtons = document.querySelectorAll('[data-number]')
 const operationButtons = document.querySelectorAll('[data-operation]')
+const rootButton = document.querySelector('[data-root]')
+const powButton = document.querySelector('[data-pow]')
 const equalsButton = document.querySelector('[data-equals]')
 const deleteButton = document.querySelector('[data-delete]')
 const allClearButton = document.querySelector('[data-all-clear]')
@@ -124,5 +142,15 @@ allClearButton.addEventListener('click', button => {
 
 deleteButton.addEventListener('click', button => {
   calculator.delete()
+  calculator.updateDisplay()
+})
+
+powButton.addEventListener('click', button => {
+  calculator.pow()
+  calculator.updateDisplay()
+})
+
+rootButton.addEventListener('click', button => {
+  calculator.root()
   calculator.updateDisplay()
 })
